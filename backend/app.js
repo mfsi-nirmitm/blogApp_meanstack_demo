@@ -6,13 +6,32 @@ const Post = require('./models/post');
 
 const app = express();
 
-mongoose.connect("mongodb+srv://nirmit:SqFj5tPE032ihJg3@cluster0-hanrm.mongodb.net/test?retryWrites=true")
-  .then(() => {
-    cosole.log("Connected to database!");
-  })
-  .catch(() => {
-    console.log("Connection failed!");
-  });
+const config = {
+  dbName:'test',
+  autoIndex: false,
+  useNewUrlParser: true,
+  useCreateIndex: true
+};
+// mongoose.connect("mongodb+srv://nirmit:YPpc8DryZOwLwxKw@cluster0-hanrm.mongodb.net/",config)
+//   .then(() => {
+//     console.log("Connected to database!");
+//   })
+//   .catch(() => {
+//     console.log("Connection failed!");
+//   });
+
+mongoose.Promise = global.Promise;
+
+async function run() {
+  await mongoose.connect("mongodb+srv://nirmit:YPpc8DryZOwLwxKw@cluster0-hanrm.mongodb.net/",config);
+}
+
+run().then(() => {
+        console.log("Connected to database!");
+     })
+     .catch(() => {
+        console.log("Connection failed!");
+    });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
