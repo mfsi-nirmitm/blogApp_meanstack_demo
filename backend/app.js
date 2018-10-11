@@ -7,10 +7,10 @@ const Post = require('./models/post');
 const app = express();
 
 const config = {
-  dbName:'test',
-  autoIndex: false,
-  useNewUrlParser: true,
-  useCreateIndex: true
+  dbName:'blogApp',
+//  autoIndex: false,
+//  useCreateIndex: true,
+  useNewUrlParser: true
 };
 // mongoose.connect("mongodb+srv://nirmit:YPpc8DryZOwLwxKw@cluster0-hanrm.mongodb.net/",config)
 //   .then(() => {
@@ -54,29 +54,23 @@ app.post('/api/posts',(req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
-  console.log(post);
+  post.save();
   res.status(201).json({
     message: 'Post added successfully'
   });
 });
 
 app.get('/api/posts',(req, res, next) => {
-  const posts = [
-    {
-      id: 'fadf12421l',
-      title: 'First server-side post',
-      content: 'This is coming from the server'
-    },
-    {
-      id: "ksajflaj132",
-      title: "Second server-side post",
-      content: "This is coming form the server!"
-    }
-  ];
-  return res.status(200).json({
-    message: 'Posts fetched succesfully!',
-    posts: posts
+
+  Post.find().then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      message: 'Posts fetched succesfully!',
+      posts: documents
+    });
   });
+
+
 });
 
 module.exports = app;
