@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.post('/signup', (req, res, next) => {
 //  bcrypt.hash(req.body.password, 10).then((hash) => {
-    let hash = bcrypt.hashSync(req.body.password, 10);
+    let salt = bcrypt.genSaltSync(10);
+    let hash = bcrypt.hashSync(req.body.password, salt);
     const user = new User({
       email: req.body.email,
       password: hash
@@ -39,12 +40,9 @@ router.post('/login', (req, res, next) => {
         });
       }
       console.log(user);
-      fetchedUser = user;
-      return new Promise((resolve, reject) => {
-        let hash1 = bcrypt.compareSync(req.body.password , user.password);
-        console.log(hash1);
-        resolve(hash1);
-      });
+      let hash1 = bcrypt.compareSync(req.body.password , user.password);
+      console.log(hash1);
+
     })
       .then(result => {
         console.log(result);
