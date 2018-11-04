@@ -25,7 +25,7 @@ const config = {
 mongoose.Promise = global.Promise;
 
 async function run() {
-  await mongoose.connect("mongodb+srv://nirmit:YPpc8DryZOwLwxKw@cluster0-hanrm.mongodb.net/",config);
+  await mongoose.connect("mongodb+srv://nirmit:" + process.env.MONGO_ATLAS_PW + "@cluster0-hanrm.mongodb.net/",config);
 }
 
 run().then(() => {
